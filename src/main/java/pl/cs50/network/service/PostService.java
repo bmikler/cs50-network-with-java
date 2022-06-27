@@ -27,6 +27,14 @@ public class PostService {
                 .toList();
     }
 
+    public List<PostResponseDto> gotPostsFollowedByUser(User user) {
+        return postRepository.findAll()
+                .stream()
+                .filter(p -> user.getFollowings().contains(p.getAuthor()))
+                .map(postMapper::map)
+                .toList();
+    }
+
     public PostResponseDto createPost(PostRequestDto postRequestDto, User user) {
         Post postToSave = postMapper.map(postRequestDto, user);
         Post postSaved = postRepository.save(postToSave);
