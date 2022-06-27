@@ -1,11 +1,9 @@
-package pl.cs50.network.model.User;
+package pl.cs50.network.model.user;
 
 
 
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.cs50.network.model.post.Post;
 import pl.cs50.network.model.post.PostMapper;

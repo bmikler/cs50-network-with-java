@@ -2,12 +2,14 @@ package pl.cs50.network.model.post;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RequiredArgsConstructor
 @Getter
+@ToString
 public class PostResponseDto {
 
     private final long id;

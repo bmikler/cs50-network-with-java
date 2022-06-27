@@ -1,4 +1,4 @@
-package pl.cs50.network.model.User;
+package pl.cs50.network.model.user;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import pl.cs50.network.model.post.Post;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.*;
 
 @Entity

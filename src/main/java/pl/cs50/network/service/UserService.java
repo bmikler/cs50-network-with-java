@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import pl.cs50.network.model.User.User;
-import pl.cs50.network.model.User.UserMapper;
-import pl.cs50.network.model.User.UserRequestDto;
-import pl.cs50.network.model.User.UserResponseDto;
+import pl.cs50.network.model.user.User;
+import pl.cs50.network.model.user.UserMapper;
+import pl.cs50.network.model.user.UserRequestDto;
+import pl.cs50.network.model.user.UserResponseDto;
 import pl.cs50.network.repostiory.UserRepository;
 
 import javax.transaction.Transactional;

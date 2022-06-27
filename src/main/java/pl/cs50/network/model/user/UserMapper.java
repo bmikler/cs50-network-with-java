@@ -1,4 +1,4 @@
-package pl.cs50.network.model.User;
+package pl.cs50.network.model.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

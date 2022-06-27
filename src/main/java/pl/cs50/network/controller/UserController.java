@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import pl.cs50.network.model.User.User;
-import pl.cs50.network.model.User.UserRequestDto;
-import pl.cs50.network.model.User.UserResponseDto;
+import pl.cs50.network.model.user.User;
+import pl.cs50.network.model.user.UserRequestDto;
+import pl.cs50.network.model.user.UserResponseDto;
 import pl.cs50.network.service.UserService;
 
 @RestController
