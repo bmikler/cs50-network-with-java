@@ -23,10 +23,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author")
     private List<Post> posts;
     @Getter(AccessLevel.NONE)
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> followings;
     @Getter(AccessLevel.NONE)
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> followers;
 
     private boolean enabled;

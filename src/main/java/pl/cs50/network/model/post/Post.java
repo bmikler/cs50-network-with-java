@@ -1,9 +1,6 @@
 package pl.cs50.network.model.post;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import pl.cs50.network.model.location.Location;
 import pl.cs50.network.model.user.User;
@@ -16,6 +13,7 @@ import java.util.*;
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class Post {
 
     @Id
@@ -27,7 +25,11 @@ public class Post {
     private Location location;
     @ManyToOne
     private User author;
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "LIKES",
+            joinColumns = @JoinColumn(name = "POST_ID", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "id")
+    )
     @Getter(AccessLevel.NONE)
     private Set<User> likes;
 

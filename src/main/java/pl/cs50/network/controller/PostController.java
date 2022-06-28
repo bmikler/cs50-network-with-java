@@ -24,6 +24,12 @@ public class PostController {
     private final int POST_PER_PAGE = 5;
     private final PostService postService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getSinglePost(@PathVariable long id) {
+        PostResponseDto post = postService.getSinglePost(id);
+        return ResponseEntity.ok(post);
+    }
+
     @GetMapping
     public List<PostResponseDto> getPosts(@RequestParam(required = false) boolean followed,
                                           @RequestParam(required = false, defaultValue = "0") int page,

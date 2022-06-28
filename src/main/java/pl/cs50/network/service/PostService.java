@@ -14,6 +14,7 @@ import pl.cs50.network.model.post.PostResponseDto;
 import pl.cs50.network.repostiory.PostRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,11 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final GeolocationService geolocationService;
+
+    public PostResponseDto getSinglePost(long id) {
+        Post post = getPostById(id);
+        return postMapper.map(post);
+    }
 
     public List<PostResponseDto> getAll(Pageable paging) {
         return postRepository.findAll(paging)
