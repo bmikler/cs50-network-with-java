@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.cs50.network.model.post.Post;
 import pl.cs50.network.model.post.PostMapper;
 import pl.cs50.network.model.post.PostResponseDto;
+import pl.cs50.network.model.location.Location;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -65,19 +66,20 @@ public class UserMapperTest {
     public void mapUserWithPostsToResponse() {
 
         LocalDateTime date = LocalDateTime.now();
+        Location location = new Location("Poland", "Kraków");
 
-
-        Post post1 = new Post(date, "abc", testUser);
-        Post post2 = new Post(date, "def", testUser);
+        Post post1 = new Post(date, "abc", testUser, location);
+        Post post2 = new Post(date, "def", testUser, location);
         testUser.addPost(post1);
         testUser.addPost(post2);
 
-        Mockito.when(postMapper.map(post1)).thenReturn(new PostResponseDto(0, date, "abc", "testUser"));
-        Mockito.when(postMapper.map(post2)).thenReturn(new PostResponseDto(0, date, "def", "testUser"));
+        Mockito.when(postMapper.map(post1)).thenReturn(new PostResponseDto(0, date, "abc", "testUser", "Poland: Kraków"));
+        Mockito.when(postMapper.map(post2)).thenReturn(new PostResponseDto(0, date, "def", "testUser", "Poland: Kraków"));
 
         UserResponseDto expected = new UserResponseDto(0,
                 "testUser",
-                List.of(new PostResponseDto(0, date, "abc", "testUser"), new PostResponseDto(0, date, "def", "testUser")),
+                List.of(new PostResponseDto(0, date, "abc", "testUser", "Poland: Kraków"),
+                        new PostResponseDto(0, date, "def", "testUser", "Poland: Kraków")),
                 0,
                 0);
 

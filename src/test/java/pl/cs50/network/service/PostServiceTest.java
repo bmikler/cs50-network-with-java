@@ -9,6 +9,8 @@ import org.springframework.data.domain.*;
 import pl.cs50.network.model.post.Post;
 import pl.cs50.network.model.post.PostMapper;
 import pl.cs50.network.model.post.PostResponseDto;
+import pl.cs50.network.model.location.GeolocationService;
+import pl.cs50.network.model.location.Location;
 import pl.cs50.network.util.TimeCounter;
 import pl.cs50.network.model.user.User;
 import pl.cs50.network.repostiory.PostRepository;
@@ -28,6 +30,7 @@ public class PostServiceTest {
     private TimeCounter timeCounter;
     private LocalDateTime time;
     private Pageable paging;
+    private GeolocationService geolocationService;
 
     @BeforeAll
     public void init() {
@@ -36,7 +39,8 @@ public class PostServiceTest {
         timeCounter = Mockito.mock(TimeCounter.class);
         postMapper = new PostMapper(timeCounter);
         postRepository = Mockito.mock(PostRepository.class);
-        postService = new PostService(postRepository, postMapper);
+        geolocationService = Mockito.mock(GeolocationService.class);
+        postService = new PostService(postRepository, postMapper, geolocationService);
     }
 
     @Test
@@ -54,10 +58,11 @@ public class PostServiceTest {
     public void getAllPostsDBWithPosts() {
 
         User author = new User("testName", "testPassword", new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false);
+        Location location = new Location("Poland", "Kraków");
 
         List<Post> posts = List.of(
-                new Post(time.plusHours(1), "def", author),
-                new Post(time, "testText", author)
+                new Post(time.plusHours(1), "def", author, location),
+                new Post(time, "testText", author, location)
         );
         Page<Post> page = new PageImpl<>(posts);
 
@@ -65,8 +70,8 @@ public class PostServiceTest {
         Mockito.when(timeCounter.getTime()).thenReturn(time);
 
         List<PostResponseDto> expected = List.of(
-                new PostResponseDto(0L, time.plusHours(1), "def", "testName"),
-                new PostResponseDto(0L, time, "testText", "testName")
+                new PostResponseDto(0L, time.plusHours(1), "def", "testName", "Poland: Kraków"),
+                new PostResponseDto(0L, time, "testText", "testName", "Poland: Kraków")
         );
 
         List<PostResponseDto> actual = postService.getAll(paging);

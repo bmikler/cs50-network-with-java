@@ -16,6 +16,7 @@ public class PostResponseDto {
     private final LocalDateTime timestamp;
     private final String text;
     private final String author;
+    private final String location;
 
     @Override
     public boolean equals(Object o) {

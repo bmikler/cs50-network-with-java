@@ -3,6 +3,8 @@ package pl.cs50.network.model.post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import pl.cs50.network.model.location.Location;
 import pl.cs50.network.model.user.User;
 
 import javax.persistence.*;
@@ -20,15 +22,19 @@ public class Post {
     private long id;
     private LocalDateTime timestamp;
     private String text;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Location location;
     @ManyToOne
     private User author;
+//    @ManyToMany(mappedBy = "id")
 //    @Getter(AccessLevel.NONE)
-//    private List<Like> likes;
+//    private List<User> likes;
 
-    public Post(LocalDateTime timestamp, String text, User author) {
+    public Post(LocalDateTime timestamp, String text, User author, Location location) {
         this.timestamp = timestamp;
         this.text = text;
         this.author = author;
+        this.location = location;
 //        this.likes = new ArrayList<>();
     }
 
@@ -36,7 +42,7 @@ public class Post {
         this.text = text;
     }
 
-    //    public List<Like> getLikes() {
+//    public List<User> getLikes() {
 //        return Collections.unmodifiableList(likes);
 //    }
 

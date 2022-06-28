@@ -33,7 +33,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody UserRequestDto userRequestDto) {
-        System.out.println(userRequestDto);
         UserResponseDto userSaved = userService.save(userRequestDto);
         return ResponseEntity.ok(userSaved);
     }

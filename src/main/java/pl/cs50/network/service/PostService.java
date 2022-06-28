@@ -1,11 +1,12 @@
 package pl.cs50.network.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import pl.cs50.network.model.location.GeolocationService;
+import pl.cs50.network.model.location.Location;
 import pl.cs50.network.model.user.User;
 import pl.cs50.network.model.post.Post;
 import pl.cs50.network.model.post.PostMapper;
@@ -21,6 +22,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+    private final GeolocationService geolocationService;
 
     public List<PostResponseDto> getAll(Pageable paging) {
         return postRepository.findAll(paging)
@@ -36,8 +38,11 @@ public class PostService {
                 .toList();
     }
 
-    public PostResponseDto createPost(PostRequestDto postRequestDto, User user) {
-        Post postToSave = postMapper.map(postRequestDto, user);
+    public PostResponseDto createPost(PostRequestDto postRequestDto, User user, String ip) {
+
+        Location location = geolocationService.getLocation(ip);
+        System.out.println(location);
+        Post postToSave = postMapper.map(postRequestDto, user, location);
         Post postSaved = postRepository.save(postToSave);
         return postMapper.map(postSaved);
     }
