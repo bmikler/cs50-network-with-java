@@ -17,6 +17,7 @@ public class PostResponseDto {
     private final String text;
     private final String author;
     private final String location;
+    private final int likeCounter;
 
     @Override
     public boolean equals(Object o) {

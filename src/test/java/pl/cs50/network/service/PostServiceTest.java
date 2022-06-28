@@ -9,7 +9,6 @@ import org.springframework.data.domain.*;
 import pl.cs50.network.model.post.Post;
 import pl.cs50.network.model.post.PostMapper;
 import pl.cs50.network.model.post.PostResponseDto;
-import pl.cs50.network.model.location.GeolocationService;
 import pl.cs50.network.model.location.Location;
 import pl.cs50.network.util.TimeCounter;
 import pl.cs50.network.model.user.User;
@@ -70,8 +69,8 @@ public class PostServiceTest {
         Mockito.when(timeCounter.getTime()).thenReturn(time);
 
         List<PostResponseDto> expected = List.of(
-                new PostResponseDto(0L, time.plusHours(1), "def", "testName", "Poland: Kraków"),
-                new PostResponseDto(0L, time, "testText", "testName", "Poland: Kraków")
+                new PostResponseDto(0L, time.plusHours(1), "def", "testName", "Poland: Kraków", 0),
+                new PostResponseDto(0L, time, "testText", "testName", "Poland: Kraków", 0)
         );
 
         List<PostResponseDto> actual = postService.getAll(paging);

@@ -1,5 +1,6 @@
 package pl.cs50.network.model.post;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -9,7 +10,7 @@ import pl.cs50.network.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Getter
@@ -26,25 +27,33 @@ public class Post {
     private Location location;
     @ManyToOne
     private User author;
-//    @ManyToMany(mappedBy = "id")
-//    @Getter(AccessLevel.NONE)
-//    private List<User> likes;
+    @OneToMany
+    @Getter(AccessLevel.NONE)
+    private Set<User> likes;
 
     public Post(LocalDateTime timestamp, String text, User author, Location location) {
         this.timestamp = timestamp;
         this.text = text;
         this.author = author;
         this.location = location;
-//        this.likes = new ArrayList<>();
+        this.likes = new HashSet<>();
     }
 
     public void setText(String text) {
         this.text = text;
     }
 
-//    public List<User> getLikes() {
-//        return Collections.unmodifiableList(likes);
-//    }
+    public Set<User> getLikes() {
+        return Collections.unmodifiableSet(likes);
+    }
+
+    public void addLike(User user) {
+        likes.add(user);
+    }
+
+    public void removeLike(User user) {
+        likes.remove(user);
+    }
 
     @Override
     public boolean equals(Object o) {

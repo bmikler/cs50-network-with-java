@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import pl.cs50.network.model.location.GeolocationService;
 import pl.cs50.network.model.location.Location;
 import pl.cs50.network.model.user.User;
 import pl.cs50.network.model.post.Post;
@@ -43,22 +42,41 @@ public class PostService {
         Location location = geolocationService.getLocation(ip);
         System.out.println(location);
         Post postToSave = postMapper.map(postRequestDto, user, location);
-        Post postSaved = postRepository.save(postToSave);
-        return postMapper.map(postSaved);
+        return saveAndMap(postToSave);
     }
 
     public PostResponseDto editPost(long id, PostRequestDto newPost, User user) {
 
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+        Post post = getPostById(id);
 
         if (post.getAuthor() != user) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You can edit only Your posts");
         }
 
         post.setText(newPost.getText());
-        Post postSaved = postRepository.save(post);
+        return saveAndMap(post);
+    }
 
+    public PostResponseDto like(long id, User user) {
+        Post post = getPostById(id);
+        post.addLike(user);
+        return saveAndMap(post);
+    }
+
+    public PostResponseDto unlike(long id, User user) {
+        Post post = getPostById(id);
+        post.removeLike(user);
+        return saveAndMap(post);
+    }
+
+    private PostResponseDto saveAndMap(Post post) {
+        Post postSaved = postRepository.save(post);
         return postMapper.map(postSaved);
+
+    }
+
+    private Post getPostById(long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
     }
 }

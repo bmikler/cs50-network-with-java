@@ -73,13 +73,13 @@ public class UserMapperTest {
         testUser.addPost(post1);
         testUser.addPost(post2);
 
-        Mockito.when(postMapper.map(post1)).thenReturn(new PostResponseDto(0, date, "abc", "testUser", "Poland: Kraków"));
-        Mockito.when(postMapper.map(post2)).thenReturn(new PostResponseDto(0, date, "def", "testUser", "Poland: Kraków"));
+        Mockito.when(postMapper.map(post1)).thenReturn(new PostResponseDto(0, date, "abc", "testUser", "Poland: Kraków", 10));
+        Mockito.when(postMapper.map(post2)).thenReturn(new PostResponseDto(0, date, "def", "testUser", "Poland: Kraków", 10));
 
         UserResponseDto expected = new UserResponseDto(0,
                 "testUser",
-                List.of(new PostResponseDto(0, date, "abc", "testUser", "Poland: Kraków"),
-                        new PostResponseDto(0, date, "def", "testUser", "Poland: Kraków")),
+                List.of(new PostResponseDto(0, date, "abc", "testUser", "Poland: Kraków", 10),
+                        new PostResponseDto(0, date, "def", "testUser", "Poland: Kraków", 10)),
                 0,
                 0);
 

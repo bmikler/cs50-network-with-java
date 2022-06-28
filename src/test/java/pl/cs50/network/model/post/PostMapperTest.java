@@ -52,7 +52,7 @@ public class PostMapperTest {
 
         Post post = new Post(date, "testText", user, location);
 
-        PostResponseDto expected = new PostResponseDto(0L, date, "testText", "testName", "Poland: Kraków");
+        PostResponseDto expected = new PostResponseDto(0L, date, "testText", "testName", "Poland: Kraków", 0);
         PostResponseDto actual = postMapper.map(post);
 
         Assertions.assertEquals(expected, actual);

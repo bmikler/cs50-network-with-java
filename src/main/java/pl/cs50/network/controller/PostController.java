@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import pl.cs50.network.model.location.HttpUtils;
+import pl.cs50.network.util.HttpUtils;
 import pl.cs50.network.service.PostService;
 import pl.cs50.network.model.user.User;
 import pl.cs50.network.model.post.PostRequestDto;
@@ -51,7 +51,6 @@ public class PostController {
                                         HttpServletRequest request) {
 
         String ip = HttpUtils.getRequestIP(request);
-
         PostResponseDto postSaved = postService.createPost(post, user, ip);
         return ResponseEntity.ok(postSaved);
     }

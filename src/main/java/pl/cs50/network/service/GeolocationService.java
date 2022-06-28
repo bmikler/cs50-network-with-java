@@ -1,8 +1,9 @@
-package pl.cs50.network.model.location;
+package pl.cs50.network.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pl.cs50.network.model.location.Location;
 
 @Service
 @RequiredArgsConstructor

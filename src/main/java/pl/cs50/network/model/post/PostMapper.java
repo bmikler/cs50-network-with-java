@@ -22,7 +22,8 @@ public class PostMapper {
                 post.getTimestamp(),
                 post.getText(),
                 post.getAuthor().getUsername(),
-                post.getLocation().toString());
+                post.getLocation().toString(),
+                post.getLikes().size());
     }
 
 }

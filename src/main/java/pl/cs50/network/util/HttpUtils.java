@@ -1,4 +1,4 @@
-package pl.cs50.network.model.location;
+package pl.cs50.network.util;
 
 import javax.servlet.http.HttpServletRequest;
 
