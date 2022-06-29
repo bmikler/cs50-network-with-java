@@ -25,7 +25,7 @@ public class LikeController {
 
     }
 
-    @DeleteMapping("/{id}/unlike")
+    @DeleteMapping("/{id}/like")
     public ResponseEntity<?> unlike (@PathVariable long id,
                                   @AuthenticationPrincipal User user) {
 

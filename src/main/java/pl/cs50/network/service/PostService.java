@@ -44,9 +44,7 @@ public class PostService {
     }
 
     public PostResponseDto createPost(PostRequestDto postRequestDto, User user, String ip) {
-
         Location location = geolocationService.getLocation(ip);
-        System.out.println(location);
         Post postToSave = postMapper.map(postRequestDto, user, location);
         return saveAndMap(postToSave);
     }

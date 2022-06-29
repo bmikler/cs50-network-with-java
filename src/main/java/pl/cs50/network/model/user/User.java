@@ -119,8 +119,8 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", posts=" + posts +
+                ", followings=" + followings +
                 '}';
     }
-
-
 }
