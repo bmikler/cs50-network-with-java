@@ -2,6 +2,7 @@ package pl.cs50.network.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -36,6 +38,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class PostControllerTest {
 
     @Autowired
@@ -123,7 +126,6 @@ public class PostControllerTest {
 
         int postsBefore = postRepository.findAll().size();
 
-
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/posts/" + post.getId()).with(user(user))
                         .contentType(MediaType.APPLICATION_JSON).content("{\"text\":\"edited\"}"))
                 .andExpect(MockMvcResultMatchers.status().is(200))
@@ -166,6 +168,7 @@ public class PostControllerTest {
     }
 
     @Test
+    @Transactional
     public void createPost() throws Exception {
 
         User user = userRepository.save(new User("user", "test", new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
@@ -184,6 +187,44 @@ public class PostControllerTest {
         assertEquals(postNumberBefore + 1, postNumberAfter);
         assertEquals("user", postResponseDto.getAuthor());
         assertEquals("newPost", postResponseDto.getText());
+    }
+
+
+    @SneakyThrows
+    @Test
+    @Transactional
+    public void deletePostOk() {
+
+        User user = userRepository.save(new User("test", "test", new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
+        Post post = postRepository.save(new Post(LocalDateTime.now(), "abc", user, new Location("Poland", "Krakow")));
+
+        int postsBefore = postRepository.findAll().size();
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/posts/" + post.getId()).with(user(user)))
+                .andExpect(MockMvcResultMatchers.status().is(204));
+
+        int postsAfter = postRepository.findAll().size();
+
+        assertEquals(postsBefore - 1, postsAfter);
+
+    }
+
+    @Test
+    public void deletePostUserUnauthorized() throws Exception {
+
+        User user = userRepository.save(new User("user", "test", new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
+        User author = userRepository.save(new User("author", "test", new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
+        Post post = postRepository.save(new Post(LocalDateTime.now(), "abc", author, new Location("Poland", "Krakow")));
+
+        int postsBefore = postRepository.findAll().size();
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/posts/" + post.getId()).with(user(user)))
+                .andExpect(MockMvcResultMatchers.status().is(401));
+
+        int postsAfter = postRepository.findAll().size();
+
+        assertEquals(postsBefore, postsAfter);
+
     }
 
 }

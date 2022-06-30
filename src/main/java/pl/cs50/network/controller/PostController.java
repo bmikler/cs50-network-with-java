@@ -1,6 +1,8 @@
 package pl.cs50.network.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,6 +25,7 @@ public class PostController {
 
     private final int POST_PER_PAGE = 5;
     private final PostService postService;
+    private final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getSinglePost(@PathVariable long id) {
@@ -56,9 +59,26 @@ public class PostController {
                                         @AuthenticationPrincipal User user,
                                         HttpServletRequest request) {
 
+        logger.info("server name: " + request.getServerName());
+        logger.info("remote host: " + request.getRemoteHost());
+        logger.info("real path: " + request.getRemoteAddr());
+        logger.info("real path: " + request.getLocalAddr());
+        logger.info("real path: " + request.getLocalName());
+;
+
         String ip = HttpUtils.getRequestIP(request);
         PostResponseDto postSaved = postService.createPost(post, user, ip);
         return ResponseEntity.ok(postSaved);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deletePost(@PathVariable long id,
+                                        @AuthenticationPrincipal User user) {
+
+        postService.deletePost(id, user);
+
+        return ResponseEntity.noContent().build();
+
     }
 
 }

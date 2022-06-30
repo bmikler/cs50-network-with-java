@@ -79,6 +79,17 @@ public class PostService {
 
     }
 
+    public void deletePost(long id, User user) {
+        Post post = getPostById(id);
+
+        if (!post.getAuthor().equals(user)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, " You can delete only Your posts");
+        }
+
+        postRepository.delete(post);
+
+    }
+
     private Post getPostById(long id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
