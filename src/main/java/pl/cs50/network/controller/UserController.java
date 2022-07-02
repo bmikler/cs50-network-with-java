@@ -9,6 +9,8 @@ import pl.cs50.network.model.user.UserRequestDto;
 import pl.cs50.network.model.user.UserResponseDto;
 import pl.cs50.network.service.UserService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
         UserResponseDto userSaved = userService.save(userRequestDto);
         return ResponseEntity.ok(userSaved);
     }
