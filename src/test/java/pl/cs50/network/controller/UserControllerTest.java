@@ -73,14 +73,14 @@ class UserControllerTest {
     @Transactional
     public void createUserOk() throws Exception {
 
-        String jsonInput = "{\"username\":\"user\",\"password\":\"password\"}";
+        String jsonInput = "{\"username\":\"createUserOk\",\"password\":\"password\"}";
         int databaseSizeBefore = userRepository.findAll().size();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonInput))
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("user"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("createUserOk"));
 
         int databaseSizeAfter = userRepository.findAll().size();
         assertEquals(databaseSizeBefore + 1, databaseSizeAfter);
@@ -91,7 +91,7 @@ class UserControllerTest {
     @Transactional
     public void createUserAlreadyExist() throws Exception {
 
-        userRepository.save(new User("user", "password",new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
+        userRepository.save(new User("createUserAlreadyExist", "password",new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
 
         String jsonInput = "{\"username\":\"user\",\"password\":\"password\"}";
         int databaseSizeBefore = userRepository.findAll().size();
@@ -157,13 +157,13 @@ class UserControllerTest {
     @Test
     @Transactional
     public void followUserNotFound() throws Exception {
-        User follower = userRepository.save(new User("follower", "password", new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
+        User follower = userRepository.save(new User("followUserNotFound", "password", new ArrayList<>(), new HashSet<>(), new HashSet<>(), true, false));
         int dbSize = userRepository.findAll().size();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user/profile/" + dbSize + 1).with(user(follower)))
                 .andExpect(MockMvcResultMatchers.status().is(404));
 
-        assertTrue(userRepository.findByUsername("follower").get().getFollowings().isEmpty());
+        assertTrue(userRepository.findByUsername("followUserNotFound").get().getFollowings().isEmpty());
 
     }
 
